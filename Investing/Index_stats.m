@@ -1,0 +1,118 @@
+% Examines recent price and volume activity of 3 major % indices to help in forecasting market direction. % LuminousLogic.com % 
+
+% User-defined parameters % THE VALUES BELOW ARE JUST DEFAULT PLACEHOLDERS AND NOT NECESSARILY OPTIMAL! 
+% (1) List tickers of indices we will examine 
+ indices_list = {'DIA' '^IXIC' '^GSPC'}; 
+
+% Dow, NASDAQ, S&P 500 % (2) Set observation window size 
+obsv_win = 20; 
+
+% Examining last 20 trading days % (3) Stall range - if the change in price is between these two values, 
+
+% we'll throw a 'possible stall' flag 
+stall_high = 1.001; 
+
+% If price movement is 0.1% higher or lower than previous 
+stall_low = 0.999; % day, we'll call that a possible stall % Retrive data from Yahoo! Finance and plot the results for 
+
+
+N=length(indices_list);
+
+ticker = ' ';
+hist_date = 0;
+hist_high = 0; 
+hist_low = 0; 
+hist_open = 0; 
+hist_close = 0; 
+hist_vol = 0;
+
+for i=1:N
+    if (i==1)
+        [ticker_i, hist_date_i, hist_high_i, hist_low_i, hist_open_i, hist_close_i, hist_vol_i] = Get_Yahoo(indices_list(i)); 
+        fprintf(1,'done!\n'); % Go ahead and compute average close and volume here 
+        low_ave_50d = zeros(length(hist_low_i),1); 
+        low_ave_200d = zeros(length(hist_low_i),1); 
+        vol_ave_50d = zeros(length(hist_vol_i ),1); 
+        vol_ave_200d = zeros(length(hist_vol_i ),1); 
+        for j=51:length(hist_close_i) 
+            low_ave_50d(j) = mean(hist_low_i(j-50:j-1)); 
+            vol_ave_50d(j) = mean(hist_vol_i(j-50:j-1)); 
+        end
+        for i=201:length(hist_close) 
+            low_ave_200d(j) = mean(hist_low_i(j-200:j-1)); 
+            vol_ave_200d(j) = mean(hist_vol_i(j-200:j-1)); 
+        end
+        % Extract only the last obsv_win+1 days worth of data
+        hist_date_i = {hist_date_i{end-obsv_win:end}}; 
+        hist_high_i = hist_high_i(end-obsv_win:end); 
+        hist_low_i = hist_low_i (end-obsv_win:end); 
+        hist_open_i = hist_open_i (end-obsv_win:end); 
+        hist_close_i = hist_close_i (end-obsv_win:end); 
+        hist_vol_i = hist_vol_i (end-obsv_win:end); 
+        low_ave_50d = low_ave_50d (end-obsv_win:end); 
+        low_ave_200d = low_ave_200d(end-obsv_win:end); 
+        vol_ave_50d = vol_ave_50d (end-obsv_win:end); 
+        vol_ave_200d = vol_ave_200d(end-obsv_win:end); 
+        % Print some stats to screen % 
+        acc_days = find((hist_close_i(2:end) >= (hist_close_i(1:end-1)*stall_high)) & (hist_vol_i(2:end) > hist_vol_i(1:end-1))); 
+        dist_days = find((hist_close_i(2:end) <= (hist_close_i(1:end-1)*stall_low )) & (hist_vol_i(2:end) > hist_vol_i(1:end-1))); 
+        stall_days = find(((hist_close_i(2:end)./ hist_close_i(1:end-1))*stall_low ) & (hist_vol_i(2:end) > vol_ave_50d(2:end))); 
+        
+        fprintf(1,'In the last %d trading days, this index has had:\n',obsv_win); 
+        fprintf(1,' %2d days of possible accumulation (closed higher & on larger volume than previous day)\n',length( acc_days)); 
+        fprintf(1,' %2d days of possible distribution (closed lower & on larger volume than previous day)\n',length(dist_days)); 
+        fprintf(1,' %2d days of possible stalling (closed roughly the same as previous day but on larger than normal volume)\n',length(stall_days)); 
+        % Plot Price figure; subplot(2,1,1); for i=2:obsv_win+1 if hist_close(i-1)
+    ticker = [ticker_i];
+    hist_date = [hist_date_i];
+    hist_high = [hist_high_i];
+    hist_low = [hist_low_i];
+    hist_open = [hist_open_i];
+    hist_close = [hist_close_i];
+    hist_vol = [hist_vol_i];
+    end
+    
+    if (i>1)
+    [ticker_i, hist_date_i, hist_high_i, hist_low_i, hist_open_i, hist_close_i, hist_vol_i] = Get_Yahoo(indices_list(i)); 
+        fprintf(1,'done!\n'); % Go ahead and compute average close and volume here 
+        low_ave_50d = zeros(length(hist_low_i),1); 
+        low_ave_200d = zeros(length(hist_low_i),1); 
+        vol_ave_50d = zeros(length(hist_vol_i ),1); 
+        vol_ave_200d = zeros(length(hist_vol_i ),1); 
+        for j=51:length(hist_close_i) 
+            low_ave_50d(j) = mean(hist_low_i(j-50:j-1)); 
+            vol_ave_50d(j) = mean(hist_vol_i(j-50:j-1)); 
+        end
+        for i=201:length(hist_close) 
+            low_ave_200d(j) = mean(hist_low_i(j-200:j-1)); 
+            vol_ave_200d(j) = mean(hist_vol_i(j-200:j-1)); 
+        end
+        % Extract only the last obsv_win+1 days worth of data
+        hist_date_i = {hist_date_i{end-obsv_win:end}}; 
+        hist_high_i = hist_high_i(end-obsv_win:end); 
+        hist_low_i = hist_low_i (end-obsv_win:end); 
+        hist_open_i = hist_open_i (end-obsv_win:end); 
+        hist_close_i = hist_close_i (end-obsv_win:end); 
+        hist_vol_i = hist_vol_i (end-obsv_win:end); 
+        low_ave_50d = low_ave_50d (end-obsv_win:end); 
+        low_ave_200d = low_ave_200d(end-obsv_win:end); 
+        vol_ave_50d = vol_ave_50d (end-obsv_win:end); 
+        vol_ave_200d = vol_ave_200d(end-obsv_win:end); 
+        % Print some stats to screen % 
+        acc_days = find((hist_close_i(2:end) >= (hist_close_i(1:end-1)*stall_high)) & (hist_vol_i(2:end) > hist_vol_i(1:end-1))); 
+        dist_days = find((hist_close_i(2:end) <= (hist_close_i(1:end-1)*stall_low )) & (hist_vol_i(2:end) > hist_vol_i(1:end-1))); 
+        stall_days = find(((hist_close_i(2:end)./ hist_close_i(1:end-1))*stall_low ) & (hist_vol_i(2:end) > vol_ave_50d(2:end))); 
+        fprintf(1,'In the last %d trading days, this index has had:\n',obsv_win); 
+        fprintf(1,' %2d days of possible accumulation (closed higher & on larger volume than previous day)\n',length( acc_days)); 
+        fprintf(1,' %2d days of possible distribution (closed lower & on larger volume than previous day)\n',length(dist_days)); 
+        fprintf(1,' %2d days of possible stalling (closed roughly the same as previous day but on larger than normal volume)\n',length(stall_days)); 
+    
+    ticker = [ticker ticker_i];
+    hist_date = [hist_date hist_date_i];
+    hist_high = [hist_high hist_high_i];
+    hist_low = [hist_low hist_low_i];
+    hist_open = [hist_open hist_open_i];
+    hist_close = [hist_close hist_close_i];
+    hist_vol = [hist_vol hist_vol_i];
+    end
+end

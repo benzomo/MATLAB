@@ -1,0 +1,28 @@
+Sub Color()
+
+j = 2
+i = 2
+
+Do Until IsEmpty(Cells(i, j))
+
+Do Until IsEmpty(Cells(i, j))
+
+If Abs(Cells(i, j).Value) <= 1 And Abs(Cells(i, j).Value) >= 0.75 Then
+    Cells(i, j).Interior.ColorIndex = 3
+ElseIf Abs(Cells(i, j).Value) < 0.75 And Abs(Cells(i, j).Value) >= 0.5 Then
+    Cells(i, j).Interior.ColorIndex = 46
+ElseIf Abs(Cells(i, j).Value) < 0.5 And Abs(Cells(i, j).Value) >= 0.25 Then
+    Cells(i, j).Interior.ColorIndex = 27
+ElseIf Abs(Cells(i, j).Value) < 0.25 Then
+    Cells(i, j).Interior.ColorIndex = 2
+End If
+
+
+j = j + 1
+Loop
+
+j = 2
+i = i + 1
+Loop
+
+End Sub

@@ -1,0 +1,67 @@
+t=Data_3(:,1);
+
+FlowVoltCold = Data_3(:,2);
+FlowVoltHot = Data_3(:,3);
+FlowVoltTot = Data_3(:,4);
+
+T1 = Data_3(:,5);
+T2 = Data_3(:,6);
+T4 = Data_3(:,7);
+T5 = Data_3(:,8);
+
+FlowCold = 1.256 +178.032*sqrt(FlowVoltCold);
+FlowHot = 1.444+181.574*sqrt(FlowVoltHot);
+FlowTot = -2.319 + 355.822*sqrt(FlowVoltTot);
+
+figure
+plot(t,FlowCold,t,FlowHot,t,FlowTot,t,FlowCold+FlowHot);
+set(legend('FlowCold','FlowHot','FlowTot','FlowCold+FlowHot'),'Location','SouthEast');
+
+at = t(1:1708); bt=t(1709:end);
+aFlowCold = FlowCold(1:1708); bFlowCold=FlowCold(1709:end);
+aFlowHot = FlowHot(1:1708); bFlowHot=FlowHot(1709:end);
+aFlowTot = FlowTot(1:1708); bFlowTot=FlowTot(1709:end);
+
+aMeanFlowCold = mean(aFlowCold);
+bMeanFlowCold = mean(bFlowCold);
+aMeanFlowHot = mean(aFlowHot);
+bMeanFlowHot = mean(bFlowHot);
+aMeanFlowTot = mean(aFlowTot);
+bMeanFlowTot = mean(bFlowTot);
+aVarFlowCold = var(aFlowCold);
+bVarFlowCold = var(bFlowCold);
+aVarFlowHot = var(aFlowHot);
+bVarFlowHot = var(bFlowHot);
+aVarFlowTot = var(aFlowTot);
+bVarFlowTot = var(bFlowTot);
+
+anCold = find(aFlowCold<aMeanFlowCold-3*sqrt(aVarFlowCold) | aFlowCold>aMeanFlowCold+3*sqrt(aVarFlowCold));
+bnCold = find(bFlowCold<bMeanFlowCold-3*sqrt(bVarFlowCold) | bFlowCold>bMeanFlowCold+3*sqrt(bVarFlowCold));
+anHot = find(aFlowHot<aMeanFlowHot-3*sqrt(aVarFlowHot) | aFlowHot>aMeanFlowHot+3*sqrt(aVarFlowHot));
+bnHot = find(bFlowHot<bMeanFlowHot-3*sqrt(bVarFlowHot) | bFlowHot>bMeanFlowHot+3*sqrt(bVarFlowHot));
+anTot = find(aFlowTot<aMeanFlowTot-3*sqrt(aVarFlowTot) | aFlowTot>aMeanFlowTot+3*sqrt(aVarFlowTot));
+bnTot = find(bFlowTot<bMeanFlowTot-3*sqrt(bVarFlowTot) | bFlowTot>bMeanFlowTot+3*sqrt(bVarFlowTot));
+
+aFlowCold(anCold) = aMeanFlowCold;
+bFlowCold(bnCold) = bMeanFlowCold;
+aFlowHot(anHot) = aMeanFlowHot;
+bFlowHot(bnHot) = bMeanFlowHot;
+aFlowTot(anTot) = aMeanFlowTot;
+bFlowTot(bnTot) = bMeanFlowTot;
+
+caMeanFlowCold = mean(aFlowCold);
+cbMeanFlowCold = mean(bFlowCold);
+caMeanFlowHot = mean(aFlowHot);
+cbMeanFlowHot = mean(bFlowHot);
+caMeanFlowTot = mean(aFlowTot);
+cbMeanFlowTot = mean(bFlowTot);
+caVarFlowCold = var(aFlowCold);
+cbVarFlowCold = var(bFlowCold);
+caVarFlowHot = var(aFlowHot);
+cbVarFlowHot = var(bFlowHot);
+caVarFlowTot = var(aFlowTot);
+cbVarFlowTot = var(bFlowTot);
+
+figure
+plot(at,aFlowCold,at,aFlowHot,at,aFlowTot,at,aFlowCold+aFlowHot,bt,bFlowCold,bt,bFlowHot,bt,bFlowTot,bt,bFlowCold+bFlowHot);
+set(legend('FlowCold','FlowHot','FlowTot','FlowCold+FlowHot', 'FlowCold','FlowHot','FlowTot','FlowCold+FlowHot'),'Location','SouthEast');

@@ -1,0 +1,7 @@
+for question 3 A/B
+
+A seems to work okay. filters out disturb but steps, not sure if this is suppose to happen.
+
+B is weird. can't get system to be stable. tried to add elements to filter fxn = (z-.21)/(z-element)
+
+

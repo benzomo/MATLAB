@@ -1,0 +1,29 @@
+function [ Cf,x,t ] = Reaction( Ci, C0, D, k,L, Nx,Nt,ht)
+
+hx=L/(Nx-1);
+
+Cold=[C0 Ci*ones(1,Nx)];
+
+C(1)=Cold(1);
+
+for j=1:Nt
+    
+    
+    C=Cold + ht*f(Cold + ht/2*f(Cold,h,D,Nx,k ));
+    
+    
+    Cold=C;
+   
+    Cold(Nx+1)=C(Nx-1);
+end
+for i=1:Nx
+    Cf(i)=C(i);
+    x(i)=(i-1)*hx;
+end  
+
+    t=Nt*ht;
+
+end
+
+
+

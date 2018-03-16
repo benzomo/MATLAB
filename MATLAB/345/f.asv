@@ -1,0 +1,42 @@
+function [ Et Ft ] = f( t )
+%F Summary of this function goes here
+%   Detailed explanation goes here
+
+N=length(t);
+Et=zeros(1,N);
+Ft=zeros(1,N);
+
+for i=1:N
+
+      A1=-1.1675E-3; B1=1.1355E-2; C1=-4.7492E-2; D1=9.9505E-2; E1=0;
+      A2=-1.895E-6; B2=8.7202E-5; C2=-1.1739E-3; D2=-1.7979E-4; E2=.092343;
+      A3=1.2618E-8; B3=-2.4995E-6; C3=1.8715E-4; D3=-6.3512E-3; E3=.083717;
+      
+      
+      
+    if(t(i)>60)
+        break;
+    end
+    if(0<=t(i)<=3)
+        Et(i)=A1*t(i)^4 + B1*t(i)^3 + C1*t(i)^2 + D1*t(i) + E1;
+         Ft(i)=A1/5*t(i)^5+ B1/4*t(i)^4+C1/3*t(i)^3 + D1/2*t(i)^2 + E1*t(i);
+         I1=A1/5*3^5+B1/4*3^4+C1/3*3^3+D1/2*3^2+E1*3;
+    end
+    
+    if(3<t(i)<=20)
+        Et(i)=A2*t(i)^4 + B2*t(i)^3 + C2*t(i)^2 + D2*t(i) + E2;
+         Ft(i)=A2/5*t(i)^5+ B2/4*t(i)^4+C2/3*t(i)^3 + D2/2*t(i)^2 + E2*t(i);
+         I2=A2/5*20^5+B2/4*20^4+C2/3*20^3+D2/2*20^2+E2*20;
+    end
+    
+    if(t(i)>20)
+        Et(i)=A3*t(i)^4 + B3*t(i)^3 + C3*t(i)^2 + D3*t(i) + E3;
+         Ft(i)=A3/5*t(i)^5+ B3/4*t(i)^4+C3/3*t(i)^3 + D3/2*t(i)^2 + E3*t(i);
+    end
+         
+        
+     
+    
+end
+end
+

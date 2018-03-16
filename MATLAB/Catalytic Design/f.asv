@@ -1,0 +1,11 @@
+function [ Cf ] = f( Cold,h,D,Nx,k )
+%F Summary of this function goes here
+%   Detailed explanation goes here
+
+for i=2:Nx
+    C(i)=D/h^2*(Cold(i+1)+ Cold(i-1)-2*Cold(i))-k*Cold(i)*Cold(Nx+1-i);  
+end
+
+Cf=C;
+end
+
